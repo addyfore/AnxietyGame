@@ -18,12 +18,7 @@ public class BrightSpellTemplate : SpellTemplate
     private GameObject hitObject;
     public LightPillars lightPillars;
 
-<<<<<<< Updated upstream
 
-
-        
-
-=======
     public override void Awake()
     {
         seasideRuinsEntrance.GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 0f, 1f);
@@ -31,7 +26,7 @@ public class BrightSpellTemplate : SpellTemplate
         seasideRuinsEntrance.gameObject.GetComponent<CapsuleCollider2D>().enabled = true;
         base.Awake();
     }
->>>>>>> Stashed changes
+
 
     public override void castSpell()
     {
