@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEditor.Experimental.SceneManagement;
+using UnityEngine.Rendering.Universal;
 
 public class BrightSpellTemplate : SpellTemplate
 { 
@@ -10,11 +12,26 @@ public class BrightSpellTemplate : SpellTemplate
     public GameObject activeLightPool;
     public bool forLoopFoundDisabledPoolToImplement = false;
     public List<GameObject> instantiatedPoolsTemp = new List<GameObject>(4);
+    public GameObject seasideRuinsEntrance;
+    public GameObject monsterStone;
+    public GameObject summonedSlime;
+    private GameObject hitObject;
+    public LightPillars lightPillars;
 
+<<<<<<< Updated upstream
 
 
         
 
+=======
+    public override void Awake()
+    {
+        seasideRuinsEntrance.GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 0f, 1f);
+        seasideRuinsEntrance.gameObject.GetComponentInChildren<CapsuleCollider2D>().enabled = false;
+        seasideRuinsEntrance.gameObject.GetComponent<CapsuleCollider2D>().enabled = true;
+        base.Awake();
+    }
+>>>>>>> Stashed changes
 
     public override void castSpell()
     {
@@ -31,26 +48,45 @@ public class BrightSpellTemplate : SpellTemplate
 
         Debug.Log("hit.point = " + hit.point + "."); 
 
-        if (hit.collider != null)
+        if (hit.collider)
         {
+            hitObject = hit.collider.gameObject;
 
             gameObject.transform.position = hit.transform.position;
             gameObject.GetComponent<Animator>().SetBool("isCasting", true);
             Debug.Log("Spell now at " + gameObject.transform.position + " which should be the same as " + hit.transform.position + ".");
 
-            if (hit.collider.CompareTag("Enemy") == true)
+            if (hitObject == monsterStone)
             {
+                monsterStone.GetComponent<Light2D>().enabled = true;
+                summonedSlime.SetActive(true);
+            }
 
-                hit.collider.GetComponent<NPCHealth>().damageNPCHealth(damageAmount);
-                Debug.Log("hit enemy : " + hit.collider.name + ". Spell should be " + spellHolderScript.currentSpell + ". Collision occurred at " + hit.transform.position);
+            else if (hitObject == seasideRuinsEntrance)
+            {
+                seasideRuinsEntrance.GetComponent<SpriteRenderer>().color = new Color(198f, 198f, 198f, 1f);
+                seasideRuinsEntrance.gameObject.GetComponentInChildren<CapsuleCollider2D>().enabled = true;
+                seasideRuinsEntrance.gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
 
             }
 
-            else if (hit.collider.CompareTag("Scenery") == true)
+            else if (hitObject.GetComponent<LightPillars>())
+
+            {
+                hitObject.GetComponent<Light2D>().enabled = true;
+            }
+
+            else if (hitObject.CompareTag("Enemy"))
             {
 
-                Debug.Log("hit Something : " + hit.collider.name + " spell should be " + spellHolderScript.currentSpell + ". Collision occurred at " + hit.transform.position);
-                Debug.Log("hit tag  : " + hit.collider.tag);
+                hitObject.GetComponent<NPCHealth>().damageNPCHealth(damageAmount);
+
+            }
+
+            else if (hitObject.CompareTag("Scenery"))
+            {
+
+
             }
             else
             {
@@ -62,7 +98,8 @@ public class BrightSpellTemplate : SpellTemplate
             spellHolderScript.currentCastDownTime = currentCastDownTime;
             spellHolderScript.globalCastDownTime = globalCastDownTime;
             spellIconMask.fillAmount = 1f;
-
+            Debug.Log("hit Something : " + hit.collider.name + " spell should be " + spellHolderScript.currentSpell + ". Collision occurred at " + hit.transform.position);
+            Debug.Log("hit tag  : " + hit.collider.tag);
         }
 
 

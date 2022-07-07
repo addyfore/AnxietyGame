@@ -48,8 +48,8 @@ public class Player : MonoBehaviour
 
         currentHealth = maxHealth;
         currentMana = maxMana;
-        UIHealthBar.instance.SetValueHealth(maxHealthBar / (currentHealth / maxHealth));
-        UIHealthBar.instance.SetValueMana(maxManaBar / (currentMana / maxMana));
+        gameManager.GetComponent<UIHealthBar>().SetValueHealth(maxHealthBar / (currentHealth / maxHealth));
+        gameManager.GetComponent<UIHealthBar>().SetValueMana(maxManaBar / (currentMana / maxMana));
 
     }
 
@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
     {
 
         currentHealth = Mathf.Clamp(currentHealth + amount, 0f, maxHealth);
-        UIHealthBar.instance.SetValueHealth(maxHealthBar / (currentHealth / maxHealth));
+        gameManager.GetComponent<UIHealthBar>().SetValueHealth(maxHealthBar / (currentHealth / maxHealth));
 
 
         if (currentHealth <= 0)
@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
     {
 
         currentMana = Mathf.Clamp(currentMana + amount, 0, maxMana);
-        UIHealthBar.instance.SetValueMana(maxManaBar / (currentMana / maxMana));
+        gameManager.GetComponent<UIHealthBar>().SetValueMana(maxManaBar / (currentMana / maxMana));
 
     }
 

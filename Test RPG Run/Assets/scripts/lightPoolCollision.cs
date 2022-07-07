@@ -8,10 +8,8 @@ using UnityEngine.Rendering.Universal;
 
 public class lightPoolCollision : MonoBehaviour
 {
-
-
+    public GameManager gameManager;
     //public Light2D light2D;
-
 
     public void Awake()
     {
@@ -29,9 +27,15 @@ public class lightPoolCollision : MonoBehaviour
         {
 
             Debug.Log(collider.name + "has left the ring of light and it should now deactivate!");
-
-            gameObject.SetActive(false);
-
+            gameManager.LightsOnPuzzleObjects.Remove(gameObject.GetComponentInParent<LightPillars>().pillarGameObjectLit);
+            if (gameObject.GetComponentInParent<Light2D>())
+            {
+                gameObject.GetComponentInParent<Light2D>().enabled = false;
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
 
 
         }

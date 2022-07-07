@@ -7,7 +7,7 @@ public class SceneTransition : MonoBehaviour
 {
 
     public SceneTransition destination;
-    public Collider2D collidingObject;
+    private Collider2D collidingObject;
 
 
     public virtual void OnTriggerEnter2D(Collider2D collision)
@@ -15,6 +15,7 @@ public class SceneTransition : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && collision.gameObject.GetComponent<Player>().transitioningToScene == false)
            {
 
+                collidingObject = collision;
                 collision.gameObject.GetComponent<Player>().transitioningToScene = true;
                 GameManager.gameManagerObject.GetComponent<UIFade>().callingTransition = destination;
                 GameManager.gameManagerObject.GetComponent<UIFade>().fadingIn = false;
