@@ -18,12 +18,7 @@ public class BrightSpellTemplate : SpellTemplate
     private GameObject hitObject;
     public LightPillars lightPillars;
 
-<<<<<<< Updated upstream
 
-
-        
-
-=======
     public override void Awake()
     {
         seasideRuinsEntrance.GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 0f, 1f);
@@ -31,12 +26,11 @@ public class BrightSpellTemplate : SpellTemplate
         seasideRuinsEntrance.gameObject.GetComponent<CapsuleCollider2D>().enabled = true;
         base.Awake();
     }
->>>>>>> Stashed changes
+
 
     public override void castSpell()
     {
         int layerMask = LayerMask.GetMask("Scenery", "Enemy");
-        //rawDirection = new Vector3(mousePos.x, mousePos.y, 0f) - tempHeroTransformValues;
         heroTransform = hero.transform.position;
         direction = (mousePos - heroTransform).normalized;
         Debug.Log("hero transform position = " + hero.transform.position);
