@@ -77,15 +77,17 @@ public class Player : MonoBehaviour
     //breathe doesn't actually get instantiated as there will never be more than one instance;
     public GameObject breatheSpell;
 
-    public GameObject fizzleSpell;
-    public Animator fizzleSpellAnim;
+    //public GameObject fizzleSpell;
+    //public Animator fizzleSpellAnim;
 
 
-    public float globalCastDownTime;
-    public float currentCastDownTime;
+    //public float globalCastDownTime;
+    //public float currentCastDownTime;
 
     //spells and interactions are double casting, (leading to the failSpell beep on every cast.) The below should stop that from happening.
     public int waitForSpellCheck;
+    public float fizzleCastDowntime;
+    public SpellHolder spellHolder;
 
     //public GameObject dialogueBox;
     //public GameObject thoughtBox;
@@ -182,8 +184,7 @@ public class Player : MonoBehaviour
 
         //Temporary cap for spells until we can get a persistent variable in place to track how many spells the player has with saves and such.
 
-        currentCastDownTime = 0f;
-        globalCastDownTime = 0f;
+
         waitForSpellCheck = 0;
         spellIconMask.fillAmount = 0f;
 
@@ -229,21 +230,21 @@ public class Player : MonoBehaviour
             //Debug.Log("spell instantiate template script is " + currentSpellTemplate);
             //Debug.Log("Spell selection list position is " + selectedSpell);
 
-            if (globalCastDownTime > currentSpellTemplate.currentCastDownTime && selectedSpell != 0)
+            if (spellHolder.globalCastDownTime > currentSpellTemplate.currentCastDownTime && selectedSpell != 0)
             {
-                currentSpellTemplate.currentCastDownTime = globalCastDownTime;
+                spellHolder.currentCastDownTime = spellHolder.globalCastDownTime;
             }
 
             else
             {
                 //0 is breathe so not bothering to put in anything wrt global cast cooldowns
-                currentCastDownTime = currentSpellTemplate.currentCastDownTime;
+                spellHolder.currentCastDownTime = currentSpellTemplate.currentCastDownTime;
             }
 
 
 
             //Debug.Log("mouse scroll wheel up. Spellholder.selectedSpell = " + selectedSpell);
-            spellIconImage.GetComponent<Image>().sprite = currentSpellIcon;
+            spellIconImage.sprite = currentSpellIcon;
 
 
         }
@@ -270,23 +271,23 @@ public class Player : MonoBehaviour
             //Debug.Log("spell instantiate template script is " + currentSpellTemplate);
 
 
-            if (globalCastDownTime > currentSpellTemplate.currentCastDownTime && selectedSpell != 0)
+            if (spellHolder.globalCastDownTime > currentSpellTemplate.currentCastDownTime && selectedSpell != 0)
             {
-                currentCastDownTime = globalCastDownTime;
-                currentSpellTemplate.currentCastDownTime = globalCastDownTime;
+                currentSpellTemplate.currentCastDownTime = spellHolder.globalCastDownTime;
+
             }
             else
             {
                 //0 is breathe so not bothering to put in anything wrt global cast cooldowns
-                currentCastDownTime = currentSpellTemplate.currentCastDownTime;
+                spellHolder.currentCastDownTime = currentSpellTemplate.currentCastDownTime;
             }
 
 
             //Debug.Log("mouse scroll wheel down Spellholder.selectedSpell = " + selectedSpell);
-            spellIconImage.GetComponent<Image>().sprite = currentSpellIcon;
+            spellIconImage.sprite = currentSpellIcon;
         }
 
-        if (currentCastDownTime > 0f)
+      /*  if (currentCastDownTime > 0f)
         {
             currentCastDownTime -= Time.deltaTime;
 
@@ -311,7 +312,7 @@ public class Player : MonoBehaviour
         spellIconMask.fillAmount = Mathf.Clamp01(currentCastDownTime / currentSpellTemplate.castDownTime);
         spellSelectMouseScrollWheel = 0;
         //more work on gamepads later!
-
+      */
     }
 
     public void OnInteract(InputAction.CallbackContext context)
@@ -348,14 +349,14 @@ public class Player : MonoBehaviour
             if (selectedSpell == 0)
             {
 
-                if (currentCastDownTime != 0)
+                if (spellHolder.currentCastDownTime != 0)
                 {
                     //Debug.Log("mouse click registered for spell casting. Spell on cooldown, attempt failed.");
                     audioSource.PlayOneShot(failSpell);
 
 
                 }
-                else if (currentCastDownTime == 0f)
+                else if (spellHolder.currentCastDownTime == 0f)
                 {
                     //This spell has no range and requires no values other than being at 0 on currentCastDownTime.
                     //Debug.Log("mouse click registered for spell casting. Spell available to cast, no cooldown in place. " + currentSpellTemplate.name + " is the current instantiated template.");
@@ -365,7 +366,7 @@ public class Player : MonoBehaviour
             }
             else
             {
-                if (currentCastDownTime != 0)
+                if (spellHolder.currentCastDownTime != 0)
                 {
                     //Debug.Log("mouse click registered for spell casting. Spell on cooldown, attempt failed.");
                     audioSource.PlayOneShot(failSpell, 1f);
@@ -373,7 +374,7 @@ public class Player : MonoBehaviour
 
 
                 }
-                else if (currentCastDownTime == 0f)
+                else if (spellHolder.currentCastDownTime == 0f)
                 {
                     //Debug.Log("pre camera conversion gives us playerControls.PlayerActions.MousePosition.ReadValue<Vector2>() at " + Mouse.current.position.ReadValue());
                     mousePosition = mainCam.ScreenToWorldPoint(new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y, 0f));

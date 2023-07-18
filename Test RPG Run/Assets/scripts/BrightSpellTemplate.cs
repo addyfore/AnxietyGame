@@ -60,16 +60,16 @@ public class BrightSpellTemplate : SpellTemplate
     {
         int layerMask = LayerMask.GetMask("Scenery", "Enemy");
         //rawDirection = new Vector3(mousePos.x, mousePos.y, 0f) - tempHeroTransformValues;
-        heroTransform = hero.transform.position;
-        direction = (mousePos - heroTransform).normalized;
+        casterTransform = hero.transform.position;
+        direction = (mousePos - casterTransform).normalized;
         Debug.Log("hero transform position = " + hero.transform.position);
         Debug.Log("Camera.main.ScreenToWorldPoint(hero.transform.position) = " + Camera.main.ScreenToWorldPoint(hero.transform.position));
-        Debug.Log("heroTransform = " + heroTransform + ", direction = " + direction + ", mousePos = " + mousePos + ".");        
+        Debug.Log("heroTransform = " + casterTransform + ", direction = " + direction + ", mousePos = " + mousePos + ".");        
 
 
-        RaycastHit2D hit = Physics2D.Raycast(heroTransform, direction, rayCastDistance, layerMask);
+        RaycastHit2D hit = Physics2D.Raycast(casterTransform, direction, rayCastDistance, layerMask);
 
-        spellSound.Play();
+        //spellSound.Play();
 
         Debug.Log("hit.point = " + hit.point + ".");
 
@@ -171,8 +171,8 @@ public class BrightSpellTemplate : SpellTemplate
             instantiatedPools.AddRange(instantiatedPoolsTemp);
             instantiatedPoolsTemp.Clear();
 
-            mouseDistance = Vector2.Distance(heroTransform, mousePos);
-            Debug.Log("mouseDistance = " + mouseDistance + ", calculated using heroTransform (" + heroTransform + ") and mousePos (" + mousePos + ")");
+            mouseDistance = Vector2.Distance(casterTransform, mousePos);
+            Debug.Log("mouseDistance = " + mouseDistance + ", calculated using heroTransform (" + casterTransform + ") and mousePos (" + mousePos + ")");
 
             if (mouseDistance < rayCastDistance)
             {
@@ -182,7 +182,7 @@ public class BrightSpellTemplate : SpellTemplate
             }
             else
             {
-                point = new Vector3(heroTransform.x + (direction.x * rayCastDistance), heroTransform.y + (direction.y * rayCastDistance), 0f);
+                point = new Vector3(casterTransform.x + (direction.x * rayCastDistance), casterTransform.y + (direction.y * rayCastDistance), 0f);
                 Debug.Log("point now converted to heroTransform + direction * rayCastDistance and located at " + point + ".");
             }
 

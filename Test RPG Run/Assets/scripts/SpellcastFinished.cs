@@ -8,7 +8,7 @@ public class SpellcastFinished : MonoBehaviour
 
     public void OnSpellEnd()
     {
-        gameObject.GetComponent<Animator>().SetBool("isCasting", false);
+        Destroy(gameObject);
     }
 
 }

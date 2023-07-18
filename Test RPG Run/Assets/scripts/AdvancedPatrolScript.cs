@@ -48,7 +48,7 @@ public class AdvancedPatrolScript : MonoBehaviour
 
     public NPCController controller;
     public Animator animator;
-    public Rigidbody2D rigidBody2D;
+    //public Rigidbody2D rigidBody2D;
 
     public float healthDamage;
     public float manaDamage;
@@ -73,7 +73,7 @@ public class AdvancedPatrolScript : MonoBehaviour
         isInterrupted = false;
         animator = GetComponent<Animator>();
         controller = GetComponent<NPCController>();
-        rigidBody2D = GetComponent<Rigidbody2D>();
+        //rigidBody2D = GetComponent<Rigidbody2D>();
         healthDamage = defaultHealthDamage;
         manaDamage = defaultManaDamage;
 
@@ -186,7 +186,7 @@ public class AdvancedPatrolScript : MonoBehaviour
         {
             animator.SetFloat("Speed", 1f);
             controller.isMoving = true;
-            Vector2 position = rigidBody2D.position;
+            Vector2 position = transform.position;
             var horizontal = vectorDestination.x - position.x;
             var vertical = vectorDestination.y - position.y;
             var velocity = new Vector2(horizontal, vertical);
@@ -230,7 +230,7 @@ public class AdvancedPatrolScript : MonoBehaviour
             SetDestination(target);
             animator.SetFloat("Speed", 1f);
             controller.isMoving = true;
-            Vector2 position = rigidBody2D.position;
+            Vector2 position = transform.position;
             var horizontal = target.transform.position.x - position.x;
             var vertical = target.transform.position.y - position.y;
             var velocity = new Vector2(horizontal, vertical);
